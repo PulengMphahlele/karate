@@ -1,0 +1,25 @@
+#!groovy
+// API Pipeline
+properties([disableConcurrentBuilds()])
+
+pipeline {
+    agent {
+        label 'master'
+    }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
+        timestamps()
+    }
+    stages {
+        stage("First step") {
+            steps {
+                sh 'mvn test -Dtest=myKarateApiRunner'
+            }
+        }
+        stage("Second step") {
+            steps {
+                sh 'pwd && ls -la'
+            }
+        }
+    }
+}
